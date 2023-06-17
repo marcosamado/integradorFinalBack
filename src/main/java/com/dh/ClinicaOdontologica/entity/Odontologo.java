@@ -9,15 +9,15 @@ import lombok.Data;
 public class Odontologo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column()
+    @Column
     private Integer id;
-    @Column()
+    @Column
 
     private String apellido;
-    @Column()
+    @Column
 
     private String nombre;
-    @Column()
+    @Column
 
     private Integer matricula;
 

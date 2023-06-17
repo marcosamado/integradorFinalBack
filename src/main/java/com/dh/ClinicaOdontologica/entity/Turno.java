@@ -1,5 +1,6 @@
 package com.dh.ClinicaOdontologica.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class Turno {
     private String hora;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JsonProperty("paciente_id")
     private Paciente paciente;
 //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JoinColumn(name = "odontologo_id",referencedColumnName = "id", nullable = false)
