@@ -20,10 +20,10 @@ public class Turno {
     private String hora;
 
     @ManyToOne
-    @JsonProperty("paciente_id")
+    @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "odontologo_id",referencedColumnName = "id", nullable = false)
-//    private Odontologo odontologo;
+    @ManyToOne
+    @JoinColumn(name = "odontologo_id", nullable = false)
+    private Odontologo odontologo;
 
 }
