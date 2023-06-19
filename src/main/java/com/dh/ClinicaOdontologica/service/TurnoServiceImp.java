@@ -1,6 +1,7 @@
 package com.dh.ClinicaOdontologica.service;
 
 
+import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
 import com.dh.ClinicaOdontologica.entity.Turno;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,9 +21,11 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Autowired
     private TurnoRepository repository;
 
+    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+
 
     @Override
-    public Turno actualizar(Integer id, Turno turno) {
+    public TurnoDto actualizar(Turno turno) {
         return null;
     }
 
@@ -38,9 +42,9 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Override
     public List<TurnoDto> listar() {
         List<Turno> listaTurnos = repository.findAll();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return listaTurnos
                 .stream()
                 .map(turno -> mapper.convertValue(turno, TurnoDto.class))
@@ -48,7 +52,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     }
 
     @Override
-    public TurnoDto buscarPorId(Integer id) {
+    public Optional<TurnoDto> buscarPorId(Integer id) {
         return null;
     }
 }

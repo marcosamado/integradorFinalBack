@@ -26,4 +26,20 @@ public class OdontologoController {
     public ResponseEntity<?> guardar(@RequestBody Odontologo odontologo){
         return ResponseEntity.ok(service.guardar(odontologo));
     }
+
+    @PutMapping
+    public ResponseEntity<?> actualizar(@RequestBody Odontologo odontologo){
+        return ResponseEntity.ok(service.actualizar(odontologo));
+    }
+
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+//        ResponseEntity<?> response = null;
+//        if()
+//    }
+
+//    @GetMapping("/{id}")
+//    ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
+//        return ResponseEntity.ok()
+//    }
 }

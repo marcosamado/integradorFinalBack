@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,10 +18,16 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
 
     @Autowired
     private OdontologoRepository repository;
+    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
     @Override
-    public Odontologo actualizar(Integer id, Odontologo odontologo) {
-        return null;
+    public OdontologoDto actualizar(Odontologo odontologo) {
+        if(odontologo.getId() != null){
+            Odontologo o = repository.save(odontologo);
+            return mapper.convertValue(o, OdontologoDto.class);
+        } else{
+            return null;
+        }
     }
 
     @Override
@@ -30,7 +37,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
 
     @Override
     public void borrarPorId(Integer id) {
-
+        repository.deleteById(id);
     }
 
     @Override
@@ -46,7 +53,17 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     }
 
     @Override
-    public OdontologoDto buscarPorId(Integer id) {
-        return null;
+    public Optional<OdontologoDto> buscarPorId(Integer id) {
+        Optional odontologo = repository.findById(id);
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        if(odontologo.isPresent()){
+            return odontologo.stream().map(o->mapper.convertValue(o, OdontologoDto.class)).findFirst();
+        } else {
+            return null;
+        }
     }
 }

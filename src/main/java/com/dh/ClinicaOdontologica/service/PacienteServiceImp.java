@@ -2,7 +2,6 @@ package com.dh.ClinicaOdontologica.service;
 
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.entity.Paciente;
-import com.dh.ClinicaOdontologica.repository.OdontologoRepository;
 import com.dh.ClinicaOdontologica.repository.PacienteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,15 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, PacienteDto> {
     @Autowired
     private PacienteRepository repository;
+    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
     @Override
-    public Paciente actualizar(Integer id, Paciente paciente) {
+    public PacienteDto actualizar(Paciente paciente) {
         return null;
     }
 
@@ -30,7 +31,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public void borrarPorId(Integer id) {
-
+        repository.deleteById(id);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     }
 
     @Override
-    public PacienteDto buscarPorId(Integer id) {
+    public Optional<PacienteDto> buscarPorId(Integer id) {
         return null;
     }
 }
