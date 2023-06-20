@@ -21,7 +21,12 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public PacienteDto actualizar(Paciente paciente) {
-        return null;
+        if(paciente.getId() != null){
+            Paciente p = repository.save(paciente);
+            return mapper.convertValue(p, PacienteDto.class);
+        } else{
+            return null;
+        }
     }
 
     @Override
@@ -31,7 +36,10 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public void borrarPorId(Integer id) {
-        repository.deleteById(id);
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+        }
+        // SI NO ENCUENTRA EL ID TIRAR UNA EXCEPTION
     }
 
     @Override
@@ -48,6 +56,13 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public Optional<PacienteDto> buscarPorId(Integer id) {
-        return null;
+        Optional paciente = repository.findById(id);
+
+        if(paciente.isPresent()){
+            return paciente.stream().map(p->mapper.convertValue(p, PacienteDto.class)).findFirst();
+
+        } else {
+            return null; // ACA VA UNA EXCEPTION
+        }
     }
 }

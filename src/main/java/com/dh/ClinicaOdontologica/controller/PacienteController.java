@@ -22,8 +22,23 @@ public class PacienteController {
     public List<PacienteDto> obtenerTodos() {
         return service.listar();
     }
+    @PutMapping
+    public ResponseEntity<?> actualizar(@RequestBody Paciente paciente){
+        return ResponseEntity.ok(service.actualizar(paciente));
+    }
     @PostMapping
     public ResponseEntity<?> guardar(@RequestBody Paciente paciente){
         return ResponseEntity.ok(service.guardar(paciente));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+        service.borrarPorId(id);
+
+        return ResponseEntity.ok("Se elimino con exito");
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.dh.ClinicaOdontologica.service;
 
 
-import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
 import com.dh.ClinicaOdontologica.entity.Turno;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
@@ -20,6 +19,11 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
     @Autowired
     private TurnoRepository repository;
+    @Autowired
+    private PacienteServiceImp pacienteService;
+
+    @Autowired
+    private OdontologServiceImp odontologoService;
 
     private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
@@ -31,28 +35,39 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
     @Override
     public Turno guardar(Turno turno) {
-        return repository.save(turno);
+        if(pacienteService.buscarPorId(turno.getPaciente().getId()).isPresent() && odontologoService.buscarPorId(turno.getOdontologo().getId()).isPresent()){
+            return repository.save(turno);
+        }else{
+            return null; //ACA HAY QUE PONER EXCEPTION
+        }
     }
 
     @Override
     public void borrarPorId(Integer id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public List<TurnoDto> listar() {
         List<Turno> listaTurnos = repository.findAll();
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return listaTurnos
-                .stream()
-                .map(turno -> mapper.convertValue(turno, TurnoDto.class))
-                .collect(Collectors.toList());
+        if(!listaTurnos.isEmpty()){
+            return listaTurnos
+                    .stream()
+                    .map(turno -> mapper.convertValue(turno, TurnoDto.class))
+                    .collect(Collectors.toList());
+        };
+        return null; // ACA VA OTRA EXCEPTION
     }
 
     @Override
     public Optional<TurnoDto> buscarPorId(Integer id) {
-        return null;
+        Optional turno = repository.findById(id);
+
+        if(turno.isPresent()){
+            return turno.stream().map(t->mapper.convertValue(t, TurnoDto.class)).findFirst();
+
+        } else {
+            return null; // ACA VA UNA EXCEPTION
+        }
     }
 }

@@ -32,14 +32,15 @@ public class OdontologoController {
         return ResponseEntity.ok(service.actualizar(odontologo));
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
-//        ResponseEntity<?> response = null;
-//        if()
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+        service.borrarPorId(id);
 
-//    @GetMapping("/{id}")
-//    ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
-//        return ResponseEntity.ok()
-//    }
+        return ResponseEntity.ok("Se elimino con exito");
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
 }

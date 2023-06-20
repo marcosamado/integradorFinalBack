@@ -26,7 +26,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
             Odontologo o = repository.save(odontologo);
             return mapper.convertValue(o, OdontologoDto.class);
         } else{
-            return null;
+            return null; // DEBE TIRAR UNA EXCEPTION
         }
     }
 
@@ -37,7 +37,10 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
 
     @Override
     public void borrarPorId(Integer id) {
-        repository.deleteById(id);
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+        }
+        // SI NO ENCUENTRA EL ID DEBE TIRAR UNA EXPECTION
     }
 
     @Override
@@ -55,10 +58,6 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public Optional<OdontologoDto> buscarPorId(Integer id) {
         Optional odontologo = repository.findById(id);
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         if(odontologo.isPresent()){
             return odontologo.stream().map(o->mapper.convertValue(o, OdontologoDto.class)).findFirst();

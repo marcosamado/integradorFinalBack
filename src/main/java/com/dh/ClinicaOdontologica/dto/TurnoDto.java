@@ -9,5 +9,7 @@ import lombok.Data;
 public class TurnoDto {
     private String fecha;
     private String hora;
+    private PacienteDto paciente;
+    private OdontologoDto odontologo;
 
 }

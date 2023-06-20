@@ -1,5 +1,6 @@
 package com.dh.ClinicaOdontologica.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -9,4 +10,5 @@ public class OdontologoDto {
 
     private String nombre;
     private String apellido;
+
 }
