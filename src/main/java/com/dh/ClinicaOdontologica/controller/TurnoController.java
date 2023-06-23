@@ -21,8 +21,8 @@ public class TurnoController {
 
 
     @GetMapping
-    public List<TurnoDto> obtenerTodos() {
-        return service.listar();
+    public ResponseEntity<?> obtenerTodos() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @PostMapping
@@ -31,13 +31,18 @@ public class TurnoController {
     }
 
 
-//    @PutMapping
-//    public ResponseEntity<?> actualizar(@RequestBody Turno turno){
-//        return ResponseEntity.ok(service.actualizar(turno));
-//    }
+    @PutMapping
+    public ResponseEntity<?> actualizar(@RequestBody Turno turno){
+        return ResponseEntity.ok(service.actualizar(turno));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
         return ResponseEntity.ok(service.buscarPorId(id));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+        service.borrarPorId(id);
+        return ResponseEntity.ok("Se elimino con exito");
     }
 }

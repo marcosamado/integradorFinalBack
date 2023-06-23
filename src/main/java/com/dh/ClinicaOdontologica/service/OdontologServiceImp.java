@@ -18,7 +18,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
 
     @Autowired
     private OdontologoRepository repository;
-    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
     @Override
     public OdontologoDto actualizar(Odontologo odontologo) {

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, PacienteDto> {
     @Autowired
     private PacienteRepository repository;
-    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
     @Override
