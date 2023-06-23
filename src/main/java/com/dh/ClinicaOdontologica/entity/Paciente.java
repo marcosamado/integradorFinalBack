@@ -28,4 +28,6 @@ public class Paciente {
     @JoinColumn(name = "domicilio_id",referencedColumnName = "id")
     private Domicilio domicilio;
 
+
+
 }

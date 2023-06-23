@@ -1,6 +1,8 @@
 package com.dh.ClinicaOdontologica.service;
 
 
+import com.dh.ClinicaOdontologica.dto.OdontologoDto;
+import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
 import com.dh.ClinicaOdontologica.entity.Turno;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
@@ -34,9 +36,21 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     }
 
     @Override
-    public Turno guardar(Turno turno) {
+    public TurnoDto guardar(Turno turno) {
         if(pacienteService.buscarPorId(turno.getPaciente().getId()).isPresent() && odontologoService.buscarPorId(turno.getOdontologo().getId()).isPresent()){
-            return repository.save(turno);
+            Optional<PacienteDto> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
+            Optional<OdontologoDto> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
+            Turno turnoReponse = repository.save(turno);
+            TurnoDto turnoDto = mapper.convertValue(turnoReponse, TurnoDto.class);
+
+            turnoDto.getPaciente().setApellido(paciente.get().getApellido());
+            turnoDto.getPaciente().setNombre(paciente.get().getNombre());
+            turnoDto.getOdontologo().setApellido(odontologo.get().getApellido());
+            turnoDto.getOdontologo().setNombre(odontologo.get().getNombre());
+//              Turno t = repository.save(turno);
+//              TurnoDto responseDto = mapper.convertValue(turnoResponse,TurnoDto.class);
+
+            return turnoDto;
         }else{
             return null; //ACA HAY QUE PONER EXCEPTION
         }

@@ -31,8 +31,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     }
 
     @Override
-    public Odontologo guardar(Odontologo odontologo) {
-        return repository.save(odontologo);
+    public OdontologoDto guardar(Odontologo odontologo) {
+        Odontologo o = repository.save(odontologo);
+        return mapper.convertValue(o,OdontologoDto.class);
     }
 
     @Override

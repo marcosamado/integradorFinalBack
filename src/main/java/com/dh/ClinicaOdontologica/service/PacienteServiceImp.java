@@ -1,5 +1,6 @@
 package com.dh.ClinicaOdontologica.service;
 
+import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.repository.PacienteRepository;
@@ -30,8 +31,9 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     }
 
     @Override
-    public Paciente guardar(Paciente paciente) {
-        return repository.save(paciente);
+    public PacienteDto guardar(Paciente paciente) {
+        Paciente p = repository.save(paciente);
+        return mapper.convertValue(p,PacienteDto.class);
     }
 
     @Override
