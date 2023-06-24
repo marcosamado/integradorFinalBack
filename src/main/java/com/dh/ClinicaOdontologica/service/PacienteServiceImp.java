@@ -1,7 +1,7 @@
 package com.dh.ClinicaOdontologica.service;
 
-import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
+import com.dh.ClinicaOdontologica.dto.TurnoDto;
 import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.repository.PacienteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, PacienteDto> {
     @Autowired
     private PacienteRepository repository;
+
     private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
@@ -58,7 +59,8 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public Optional<PacienteDto> buscarPorId(Integer id) {
-        Optional paciente = repository.findById(id);
+
+        Optional<Paciente> paciente = repository.findById(id);
 
         if(paciente.isPresent()){
             return paciente.stream().map(p->mapper.convertValue(p, PacienteDto.class)).findFirst();
