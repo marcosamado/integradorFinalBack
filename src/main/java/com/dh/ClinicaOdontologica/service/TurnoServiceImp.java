@@ -4,6 +4,7 @@ package com.dh.ClinicaOdontologica.service;
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
+import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.entity.Turno;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -27,12 +28,17 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Autowired
     private OdontologServiceImp odontologoService;
 
-    private ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
     @Override
     public TurnoDto actualizar(Turno turno) {
-        return null;
+        if(turno.getId() != null){
+            Turno t = repository.save(turno);
+            return mapper.convertValue(t, TurnoDto.class);
+        } else{
+            return null;
+        }
     }
 
     @Override
@@ -58,7 +64,10 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
     @Override
     public void borrarPorId(Integer id) {
-        repository.deleteById(id);
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+        }
+        // SI NO ENCUENTRA EL ID TIRAR UNA EXCEPTION
     }
 
     @Override

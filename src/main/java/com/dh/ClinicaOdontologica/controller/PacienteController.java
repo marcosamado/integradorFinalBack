@@ -19,8 +19,8 @@ public class PacienteController {
 
 
     @GetMapping
-    public List<PacienteDto> obtenerTodos() {
-        return service.listar();
+    public ResponseEntity<List<PacienteDto>> obtenerTodos() {
+        return ResponseEntity.ok(service.listar());
     }
     @PutMapping
     public ResponseEntity<?> actualizar(@RequestBody Paciente paciente){
@@ -37,7 +37,6 @@ public class PacienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
         service.borrarPorId(id);
-
         return ResponseEntity.ok("Se elimino con exito");
     }
 
