@@ -2,6 +2,7 @@ package com.dh.ClinicaOdontologica.service;
 
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.entity.Odontologo;
+import com.dh.ClinicaOdontologica.exception.BadRequestException;
 import com.dh.ClinicaOdontologica.repository.OdontologoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,9 +32,14 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     }
 
     @Override
-    public OdontologoDto guardar(Odontologo odontologo) {
-        Odontologo o = repository.save(odontologo);
-        return mapper.convertValue(o,OdontologoDto.class);
+    public OdontologoDto guardar(Odontologo odontologo) throws BadRequestException {
+
+        if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
+            throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
+        }else{
+            Odontologo o = repository.save(odontologo);
+            return mapper.convertValue(o,OdontologoDto.class);
+        }
     }
 
     @Override
@@ -58,12 +64,13 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
 
     @Override
     public Optional<OdontologoDto> buscarPorId(Integer id) {
-        Optional odontologo = repository.findById(id);
+        Optional<Odontologo> odontologo = repository.findById(id);
 
         if(odontologo.isPresent()){
             return odontologo.stream().map(o->mapper.convertValue(o, OdontologoDto.class)).findFirst();
         } else {
-            return null;
+            return Optional.empty();
+
         }
     }
 }

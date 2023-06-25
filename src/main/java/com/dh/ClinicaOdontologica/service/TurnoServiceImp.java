@@ -4,8 +4,8 @@ package com.dh.ClinicaOdontologica.service;
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
-import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.entity.Turno;
+import com.dh.ClinicaOdontologica.exception.BadRequestException;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,8 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Override
     public TurnoDto actualizar(Turno turno) {
         if(turno.getId() != null){
+            Integer id = turno.getId();
+
             Turno t = repository.save(turno);
             return mapper.convertValue(t, TurnoDto.class);
         } else{
@@ -42,7 +46,8 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     }
 
     @Override
-    public TurnoDto guardar(Turno turno) {
+    public TurnoDto guardar(Turno turno) throws BadRequestException{
+
         if(pacienteService.buscarPorId(turno.getPaciente().getId()).isPresent() && odontologoService.buscarPorId(turno.getOdontologo().getId()).isPresent()){
             Optional<PacienteDto> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
             Optional<OdontologoDto> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
@@ -53,12 +58,11 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
             turnoDto.getPaciente().setNombre(paciente.get().getNombre());
             turnoDto.getOdontologo().setApellido(odontologo.get().getApellido());
             turnoDto.getOdontologo().setNombre(odontologo.get().getNombre());
-//              Turno t = repository.save(turno);
-//              TurnoDto responseDto = mapper.convertValue(turnoResponse,TurnoDto.class);
-
             return turnoDto;
         }else{
-            return null; //ACA HAY QUE PONER EXCEPTION
+            //TODO PREGUNTAR COMO HACER CON ESTA LOGICA , YA QUE TIRA UNA SQL EXCEPTION.
+            throw new BadRequestException("codigo-300","El turno no pudo ser agregado porque PACIENTE u ODONTOLOGO no existe en la base de datos");
+
         }
     }
 
@@ -84,13 +88,14 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
     @Override
     public Optional<TurnoDto> buscarPorId(Integer id) {
-        Optional turno = repository.findById(id);
+        Optional<Turno> turno = repository.findById(id);
 
         if(turno.isPresent()){
             return turno.stream().map(t->mapper.convertValue(t, TurnoDto.class)).findFirst();
 
         } else {
-            return null; // ACA VA UNA EXCEPTION
+            return Optional.empty();
+//            throw new NoSuchElementException("El Odontologo no existe"); // ACA VA UNA EXCEPTION
         }
     }
 }
