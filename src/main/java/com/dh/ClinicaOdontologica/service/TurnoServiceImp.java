@@ -60,7 +60,6 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
             turnoDto.getOdontologo().setNombre(odontologo.get().getNombre());
             return turnoDto;
         }else{
-            //TODO PREGUNTAR COMO HACER CON ESTA LOGICA , YA QUE TIRA UNA SQL EXCEPTION.
             throw new BadRequestException("codigo-300","El turno no pudo ser agregado porque PACIENTE u ODONTOLOGO no existe en la base de datos");
 
         }
