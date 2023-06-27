@@ -6,6 +6,7 @@ import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.dto.TurnoDto;
 import com.dh.ClinicaOdontologica.entity.Turno;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.TurnoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +35,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
 
     @Override
-    public TurnoDto actualizar(Turno turno) {
+    public TurnoDto actualizar(Turno turno) throws Exception{
         if(turno.getId() != null){
             Integer id = turno.getId();
 
@@ -46,7 +47,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     }
 
     @Override
-    public TurnoDto guardar(Turno turno) throws BadRequestException{
+    public TurnoDto guardar(Turno turno) throws Exception {
 
         if(pacienteService.buscarPorId(turno.getPaciente().getId()).isPresent() && odontologoService.buscarPorId(turno.getOdontologo().getId()).isPresent()){
             Optional<PacienteDto> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
@@ -60,21 +61,21 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
             turnoDto.getOdontologo().setNombre(odontologo.get().getNombre());
             return turnoDto;
         }else{
-            throw new BadRequestException("codigo-300","El turno no pudo ser agregado porque PACIENTE u ODONTOLOGO no existe en la base de datos");
+            throw new BadRequestException("codigo-300","");
 
         }
     }
 
     @Override
-    public void borrarPorId(Integer id) {
+    public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
         }
-        // SI NO ENCUENTRA EL ID TIRAR UNA EXCEPTION
+        throw new NotFoundException("codigo-301", "El Turno con id: " + id + " no existe en la base de datos");
     }
 
     @Override
-    public List<TurnoDto> listar() {
+    public List<TurnoDto> listar() throws Exception {
         List<Turno> listaTurnos = repository.findAll();
         if(!listaTurnos.isEmpty()){
             return listaTurnos
@@ -82,19 +83,18 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
                     .map(turno -> mapper.convertValue(turno, TurnoDto.class))
                     .collect(Collectors.toList());
         };
-        return null; // ACA VA OTRA EXCEPTION
+        throw new NotFoundException("codigo-302", "No se encontraron turnos registrados");
     }
 
     @Override
-    public Optional<TurnoDto> buscarPorId(Integer id) {
+    public Optional<TurnoDto> buscarPorId(Integer id) throws Exception {
         Optional<Turno> turno = repository.findById(id);
 
         if(turno.isPresent()){
             return turno.stream().map(t->mapper.convertValue(t, TurnoDto.class)).findFirst();
 
         } else {
-            return Optional.empty();
-//            throw new NoSuchElementException("El Odontologo no existe"); // ACA VA UNA EXCEPTION
+            throw new NotFoundException("codigo-301", "El Turno con id: " + id + " no existe en la base de datos");
         }
     }
 }

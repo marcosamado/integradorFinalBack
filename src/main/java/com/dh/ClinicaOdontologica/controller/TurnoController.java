@@ -23,27 +23,27 @@ public class TurnoController {
 
 
     @GetMapping
-    public ResponseEntity<?> obtenerTodos() {
+    public ResponseEntity<?> obtenerTodos() throws Exception{
         return ResponseEntity.ok(service.listar());
     }
 
     @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody Turno turno) throws BadRequestException {
+    public ResponseEntity<?> guardar(@RequestBody Turno turno) throws Exception {
         return ResponseEntity.ok(service.guardar(turno));
     }
 
 
     @PutMapping
-    public ResponseEntity<?> actualizar(@RequestBody Turno turno){
+    public ResponseEntity<?> actualizar(@RequestBody Turno turno) throws Exception{
         return ResponseEntity.ok(service.actualizar(turno));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
+    public ResponseEntity<?> obtenerPorId(@PathVariable Integer id) throws Exception{
         return ResponseEntity.ok(service.buscarPorId(id));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id) throws Exception{
         service.borrarPorId(id);
         return ResponseEntity.ok("Se elimino con exito");
     }

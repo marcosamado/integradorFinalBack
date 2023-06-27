@@ -20,29 +20,29 @@ public class OdontologoController {
 
 
     @GetMapping
-    public List<OdontologoDto> obtenerTodos() {
+    public List<OdontologoDto> obtenerTodos() throws Exception{
         return service.listar();
     }
 
     @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody Odontologo odontologo) throws BadRequestException{
+    public ResponseEntity<?> guardar(@RequestBody Odontologo odontologo) throws Exception{
         return ResponseEntity.ok(service.guardar(odontologo));
     }
 
     @PutMapping
-    public ResponseEntity<?> actualizar(@RequestBody Odontologo odontologo){
+    public ResponseEntity<?> actualizar(@RequestBody Odontologo odontologo) throws Exception{
         return ResponseEntity.ok(service.actualizar(odontologo));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id) throws Exception{
         service.borrarPorId(id);
 
         return ResponseEntity.ok("Se elimino con exito");
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> obtenerPorId(@PathVariable Integer id){
+    ResponseEntity<?> obtenerPorId(@PathVariable Integer id) throws Exception{
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 }

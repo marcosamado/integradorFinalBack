@@ -21,4 +21,12 @@ public class GlobalExceptionHandler {
         ClinicaErrorResponse errorResponse = new ClinicaErrorResponse(e.getCodigoError(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<ClinicaErrorResponse> emitirNotFoundException(NotFoundException e){
+        e.printStackTrace();
+        Logger.error("mensaje de error de NotFoundException -->" + e.getMessage());
+        ClinicaErrorResponse errorResponse = new ClinicaErrorResponse(e.getCodigoError(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }

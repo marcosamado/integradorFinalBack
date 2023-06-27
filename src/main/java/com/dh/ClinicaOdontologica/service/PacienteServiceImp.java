@@ -5,6 +5,7 @@ import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.entity.Odontologo;
 import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.PacienteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +25,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
 
     @Override
-    public PacienteDto actualizar(Paciente paciente) {
+    public PacienteDto actualizar(Paciente paciente) throws Exception{
         if(paciente.getId() != null){
             Paciente p = repository.save(paciente);
             return mapper.convertValue(p, PacienteDto.class);
@@ -34,7 +35,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     }
 
     @Override
-    public PacienteDto guardar(Paciente paciente) throws BadRequestException{
+    public PacienteDto guardar(Paciente paciente) throws Exception{
 
         if(paciente.getDomicilio() == null){
             throw new BadRequestException("codigo-200", "No puedes agregar un paciente sin Domicilio");
@@ -45,16 +46,17 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     }
 
     @Override
-    public void borrarPorId(Integer id) {
+    public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
         }
-        // SI NO ENCUENTRA EL ID TIRAR UNA EXCEPTION
+        throw new NotFoundException("codigo-201", "El Turno con id: " + id + " no existe en la base de datos");
     }
 
     @Override
-    public List<PacienteDto> listar() {
+    public List<PacienteDto> listar() throws Exception{
         List<Paciente> listaPacientes = repository.findAll();
+        if(!listaPacientes.isEmpty()){
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -62,17 +64,19 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
                 .stream()
                 .map(paciente -> mapper.convertValue(paciente,PacienteDto.class))
                 .collect(Collectors.toList());
+        }
+        throw new NotFoundException("codigo-202", "No se encontraron pacientes registrados");
     }
 
     @Override
-    public Optional<PacienteDto> buscarPorId(Integer id) {
+    public Optional<PacienteDto> buscarPorId(Integer id) throws Exception {
         Optional<Paciente> paciente = repository.findById(id);
 
         if(paciente.isPresent()){
             return paciente.stream().map(p->mapper.convertValue(p, PacienteDto.class)).findFirst();
 
         } else {
-            return Optional.empty();
+            throw new NotFoundException("codigo-201", "El Paciente con id " + id + " no Existe en la base de datos");
 
         }
     }

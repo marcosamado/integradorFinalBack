@@ -3,6 +3,7 @@ package com.dh.ClinicaOdontologica.service;
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.entity.Odontologo;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.OdontologoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
     @Override
-    public OdontologoDto actualizar(Odontologo odontologo) {
+    public OdontologoDto actualizar(Odontologo odontologo) throws Exception{
         if(odontologo.getId() != null){
             Odontologo o = repository.save(odontologo);
             return mapper.convertValue(o, OdontologoDto.class);
@@ -32,7 +33,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     }
 
     @Override
-    public OdontologoDto guardar(Odontologo odontologo) throws BadRequestException {
+    public OdontologoDto guardar(Odontologo odontologo) throws Exception {
 
         if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
             throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
@@ -43,16 +44,17 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     }
 
     @Override
-    public void borrarPorId(Integer id) {
+    public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
         }
-        // SI NO ENCUENTRA EL ID DEBE TIRAR UNA EXPECTION
+        throw new NotFoundException("codigo-101", "El Odontontologo con id " + id + " no existe en la base de datos");
     }
 
     @Override
-    public List<OdontologoDto> listar() {
+    public List<OdontologoDto> listar() throws Exception{
         List<Odontologo> listaOdontologo = repository.findAll();
+        if(!listaOdontologo.isEmpty()){
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -60,16 +62,18 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
                 .stream()
                 .map(odontologo -> mapper.convertValue(odontologo, OdontologoDto.class))
                 .collect(Collectors.toList());
+        }
+        throw new NotFoundException("codigo-102", "No se encontraron odontologos registrados");
     }
 
     @Override
-    public Optional<OdontologoDto> buscarPorId(Integer id) {
+    public Optional<OdontologoDto> buscarPorId(Integer id) throws Exception {
         Optional<Odontologo> odontologo = repository.findById(id);
 
         if(odontologo.isPresent()){
             return odontologo.stream().map(o->mapper.convertValue(o, OdontologoDto.class)).findFirst();
         } else {
-            return Optional.empty();
+            throw new NotFoundException("codigo-101", "El Odontontologo con id " + id + " no existe en la base de datos");
 
         }
     }
