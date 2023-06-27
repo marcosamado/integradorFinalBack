@@ -35,9 +35,11 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public OdontologoDto guardar(Odontologo odontologo) throws Exception {
 
-        if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
+        if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null){
+            throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden ser nulos)");
+        }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
             throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
-        }else{
+        }else {
             Odontologo o = repository.save(odontologo);
             return mapper.convertValue(o,OdontologoDto.class);
         }
@@ -47,8 +49,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
+        }else{
+            throw new NotFoundException("codigo-101", "El Odontontologo con id " + id + " no existe en la base de datos");
         }
-        throw new NotFoundException("codigo-101", "El Odontontologo con id " + id + " no existe en la base de datos");
     }
 
     @Override
@@ -62,8 +65,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
                 .stream()
                 .map(odontologo -> mapper.convertValue(odontologo, OdontologoDto.class))
                 .collect(Collectors.toList());
+        }else{
+            throw new NotFoundException("codigo-102", "No se encontraron odontologos registrados");
         }
-        throw new NotFoundException("codigo-102", "No se encontraron odontologos registrados");
     }
 
     @Override

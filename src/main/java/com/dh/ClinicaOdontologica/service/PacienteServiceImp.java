@@ -39,9 +39,12 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
         if(paciente.getDomicilio() == null){
             throw new BadRequestException("codigo-200", "No puedes agregar un paciente sin Domicilio");
+        }else if(paciente.getNombre() == null | paciente.getApellido() == null | paciente.getDni() == null | paciente.getFechaDeAlta() == null){
+            throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden ser nulos)");
         }else{
             Paciente p = repository.save(paciente);
             return mapper.convertValue(p,PacienteDto.class);
+
         }
     }
 
@@ -49,8 +52,9 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
+        }else {
+            throw new NotFoundException("codigo-201", "El Paciente con id: " + id + " no existe en la base de datos");
         }
-        throw new NotFoundException("codigo-201", "El Turno con id: " + id + " no existe en la base de datos");
     }
 
     @Override
@@ -64,8 +68,9 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
                 .stream()
                 .map(paciente -> mapper.convertValue(paciente,PacienteDto.class))
                 .collect(Collectors.toList());
+        }else{
+            throw new NotFoundException("codigo-202", "No se encontraron Pacientes registrados");
         }
-        throw new NotFoundException("codigo-202", "No se encontraron pacientes registrados");
     }
 
     @Override
@@ -76,7 +81,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
             return paciente.stream().map(p->mapper.convertValue(p, PacienteDto.class)).findFirst();
 
         } else {
-            throw new NotFoundException("codigo-201", "El Paciente con id " + id + " no Existe en la base de datos");
+            throw new NotFoundException("codigo-203", "El Paciente con id " + id + " no Existe en la base de datos");
 
         }
     }

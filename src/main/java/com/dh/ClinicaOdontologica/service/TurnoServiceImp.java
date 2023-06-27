@@ -37,8 +37,6 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Override
     public TurnoDto actualizar(Turno turno) throws Exception{
         if(turno.getId() != null){
-            Integer id = turno.getId();
-
             Turno t = repository.save(turno);
             return mapper.convertValue(t, TurnoDto.class);
         } else{
@@ -49,7 +47,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Override
     public TurnoDto guardar(Turno turno) throws Exception {
 
-        if(pacienteService.buscarPorId(turno.getPaciente().getId()).isPresent() && odontologoService.buscarPorId(turno.getOdontologo().getId()).isPresent()){
+        if(turno.getHora() != null && turno.getFecha() != null){
             Optional<PacienteDto> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
             Optional<OdontologoDto> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
             Turno turnoReponse = repository.save(turno);
@@ -61,7 +59,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
             turnoDto.getOdontologo().setNombre(odontologo.get().getNombre());
             return turnoDto;
         }else{
-            throw new BadRequestException("codigo-300","");
+            throw new BadRequestException("codigo-300","Debes ingresar una fecha y hora valida");
 
         }
     }
@@ -70,8 +68,9 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
+        }else{
+            throw new NotFoundException("codigo-301", "El Turno con id: " + id + " no existe en la base de datos");
         }
-        throw new NotFoundException("codigo-301", "El Turno con id: " + id + " no existe en la base de datos");
     }
 
     @Override
@@ -82,8 +81,9 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
                     .stream()
                     .map(turno -> mapper.convertValue(turno, TurnoDto.class))
                     .collect(Collectors.toList());
-        };
-        throw new NotFoundException("codigo-302", "No se encontraron turnos registrados");
+        }else{
+            throw new NotFoundException("codigo-302", "No se encontraron turnos registrados");
+        }
     }
 
     @Override
