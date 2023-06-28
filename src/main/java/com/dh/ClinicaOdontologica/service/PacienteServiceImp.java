@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
@@ -39,8 +40,8 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
         if(paciente.getDomicilio() == null){
             throw new BadRequestException("codigo-200", "No puedes agregar un paciente sin Domicilio");
-        }else if(paciente.getNombre() == null | paciente.getApellido() == null | paciente.getDni() == null | paciente.getFechaDeAlta() == null){
-            throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden ser nulos)");
+        }else if(paciente.getNombre() == null || paciente.getApellido() == null || paciente.getDni() == null || paciente.getFechaDeAlta() == null || Objects.equals(paciente.getFechaDeAlta(), "") || Objects.equals(paciente.getNombre(), "") || Objects.equals(paciente.getApellido(), "") || paciente.getDni().toString().equals("")){
+            throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden estar vacios o ser nulos)");
         }else{
             Paciente p = repository.save(paciente);
             return mapper.convertValue(p,PacienteDto.class);

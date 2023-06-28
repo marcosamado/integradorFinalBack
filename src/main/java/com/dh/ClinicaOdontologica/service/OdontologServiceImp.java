@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,8 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public OdontologoDto guardar(Odontologo odontologo) throws Exception {
 
-        if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null){
-            throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden ser nulos)");
+        if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
+            throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos)");
         }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
             throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
         }else {

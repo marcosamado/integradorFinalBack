@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
     @Override
     public TurnoDto guardar(Turno turno) throws Exception {
 
-        if(turno.getHora() != null && turno.getFecha() != null){
+        if(turno.getHora() != null && turno.getFecha() != null && !Objects.equals(turno.getFecha(), "") && !Objects.equals(turno.getHora(), "")){
             Optional<PacienteDto> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
             Optional<OdontologoDto> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
             Turno turnoReponse = repository.save(turno);
