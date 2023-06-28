@@ -37,11 +37,12 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
 
     @Override
     public TurnoDto actualizar(Turno turno) throws Exception{
-        if(turno.getId() != null){
+
+        if(repository.findById(turno.getId()).isPresent()){
             Turno t = repository.save(turno);
             return mapper.convertValue(t, TurnoDto.class);
         } else{
-            return null;
+            throw new NotFoundException("codigo-301", "El Turno con id: " + turno.getId() + " no existe en la base de datos");
         }
     }
 

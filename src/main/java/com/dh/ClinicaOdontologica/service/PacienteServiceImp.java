@@ -1,8 +1,6 @@
 package com.dh.ClinicaOdontologica.service;
 
-import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
-import com.dh.ClinicaOdontologica.entity.Odontologo;
 import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
 import com.dh.ClinicaOdontologica.exception.NotFoundException;
@@ -13,7 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,11 +25,11 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
 
     @Override
     public PacienteDto actualizar(Paciente paciente) throws Exception{
-        if(paciente.getId() != null){
+        if(repository.findById(paciente.getId()).isPresent()){
             Paciente p = repository.save(paciente);
             return mapper.convertValue(p, PacienteDto.class);
         } else{
-            return null;
+            throw new NotFoundException("codigo-203", "El Paciente con id " + paciente.getId() + " no Existe en la base de datos");
         }
     }
 
