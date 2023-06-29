@@ -26,8 +26,12 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     @Override
     public PacienteDto actualizar(Paciente paciente) throws Exception{
         if(repository.findById(paciente.getId()).isPresent()){
-            Paciente p = repository.save(paciente);
-            return mapper.convertValue(p, PacienteDto.class);
+            if(paciente.getNombre() == null || paciente.getApellido() == null || paciente.getDni() == null || paciente.getFechaDeAlta() == null || Objects.equals(paciente.getFechaDeAlta(), "") || Objects.equals(paciente.getNombre(), "") || Objects.equals(paciente.getApellido(), "") || paciente.getDni().toString().equals("")){
+                throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden estar vacios o ser nulos)");
+            }else{
+                Paciente p = repository.save(paciente);
+                return mapper.convertValue(p, PacienteDto.class);
+            }
         } else{
             throw new NotFoundException("codigo-203", "El Paciente con id " + paciente.getId() + " no Existe en la base de datos");
         }

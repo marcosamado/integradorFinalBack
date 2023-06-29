@@ -26,8 +26,13 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public OdontologoDto actualizar(Odontologo odontologo) throws Exception{
         if(repository.findById(odontologo.getId()).isPresent()){
-            Odontologo o = repository.save(odontologo);
-            return mapper.convertValue(o, OdontologoDto.class);
+            if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
+
+                throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos)");
+            }else{
+                Odontologo o = repository.save(odontologo);
+                return mapper.convertValue(o, OdontologoDto.class);
+            }
         } else{
             throw new NotFoundException("codigo-101", "El Odontontologo con id " + odontologo.getId() + " no existe en la base de datos");
         }
