@@ -9,11 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class OdontologServiceImpTest {
@@ -37,5 +39,35 @@ class OdontologServiceImpTest {
         //ASSERT
         Assertions.assertEquals("pablo", odontologoDto.get().getNombre());
     }
+
+    @Test
+    public void listarTodosLosOdontologos() throws Exception {
+        //ARRANGE
+        Odontologo odontologoTest1 = new Odontologo(1,"Herrera","Walter",123);
+        Odontologo odontologoTest2 = new Odontologo(2,"Amado","Marcos",33);
+        List<Odontologo> listado = new ArrayList<>();
+        listado.add(odontologoTest1);
+        listado.add(odontologoTest2);
+        when(odontologoRepositoryTest.findAll()).thenReturn(listado);
+
+        //ACT
+        List<OdontologoDto> resultado = odontologServiceImpTest.listar();
+        //ASSERT
+
+        Assertions.assertEquals(2, resultado.size());
+        Assertions.assertTrue(resultado.stream().anyMatch(oDto -> oDto.getNombre().equals("Marcos") && oDto.getApellido().equals("Amado")));
+    }
+//    @Test
+//    void borrarPorId_OdontologoExistente_OdontologoEliminado() throws Exception {
+//        // Arrange
+//        Odontologo odontologo = new Odontologo(1, "Arce", "Alberto", 1000);
+//        when(odontologoRepositoryTest.findById(odontologo.getId())).thenReturn(Optional.of(odontologo));
+//
+//        // Act
+//        odontologServiceImpTest.borrarPorId(odontologo.getId());
+//
+//        // Assert
+//        verify(odontologoRepositoryTest, times(1)).deleteById(odontologo.getId());
+//    }
 
 }
