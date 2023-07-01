@@ -14,9 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +56,6 @@ public class TurnoServiceImp  implements ClinicaOdontologicaService<Turno, Turno
             Optional<OdontologoDto> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
             Turno turnoReponse = repository.save(turno);
             TurnoDto turnoDto = mapper.convertValue(turnoReponse, TurnoDto.class);
-
             turnoDto.getPaciente().setApellido(paciente.get().getApellido());
             turnoDto.getPaciente().setNombre(paciente.get().getNombre());
             turnoDto.getOdontologo().setApellido(odontologo.get().getApellido());
