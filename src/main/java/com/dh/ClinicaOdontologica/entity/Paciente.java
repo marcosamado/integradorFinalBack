@@ -1,9 +1,14 @@
 package com.dh.ClinicaOdontologica.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
 
 @Data
 @AllArgsConstructor
@@ -23,7 +28,7 @@ public class Paciente {
     private String nombre;
     @Column
 
-    private Integer dni;
+    private String dni;
 
     @Column
     private String fechaDeAlta;

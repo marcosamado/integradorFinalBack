@@ -3,7 +3,8 @@ package com.dh.ClinicaOdontologica.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDate;
+
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

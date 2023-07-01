@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,13 +27,22 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     @Override
     public PacienteDto actualizar(Paciente paciente) throws Exception{
         if(repository.findById(paciente.getId()).isPresent()){
-            if(paciente.getNombre() == null || paciente.getApellido() == null || paciente.getDni() == null || paciente.getFechaDeAlta() == null || Objects.equals(paciente.getFechaDeAlta(), "") || Objects.equals(paciente.getNombre(), "") || Objects.equals(paciente.getApellido(), "") || paciente.getDni().toString().equals("")){
-                throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden estar vacios o ser nulos)");
-            }else{
+            if(paciente.getDomicilio() == null) {
+                throw new BadRequestException("Codigo 203", "No puedes agregar un paciente sin domicilio.");
+            } else if(paciente.getNombre() == null && paciente.getNombre().equals("") && paciente.getApellido() == null && paciente.getApellido().equals("") && paciente.getDni() == null && paciente.getDni().equals("") && paciente.getFechaDeAlta() == null && paciente.getFechaDeAlta().toString().equals("") && paciente.getDomicilio().getLocalidad() == null && paciente.getDomicilio().getLocalidad().equals("") && paciente.getDomicilio().getProvincia() == null && paciente.getDomicilio().getProvincia().toString().equals("")){
+                throw new BadRequestException("Codigo 204", "No puedes agregar un paciente con campos vacios o nulos");
+            } else if(paciente.getDni().length() != 8) {
+                throw new BadRequestException("Codigo 205", "El dni debe contener 8 digitos");
+            }else if (repository.findByDni(paciente.getDni()).isPresent()){
+                throw new BadRequestException("codigo 207", "El Dni ya existe en la base de datos");
+            }else if(!paciente.getDni().matches("[0-9]+")){
+                throw new BadRequestException("codigo 208", "El dni solo debe contener numeros");
+            }
+            else {
                 Paciente p = repository.save(paciente);
                 return mapper.convertValue(p, PacienteDto.class);
             }
-        } else{
+        }else{
             throw new NotFoundException("codigo-203", "El Paciente con id " + paciente.getId() + " no Existe en la base de datos");
         }
     }
@@ -40,14 +50,21 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     @Override
     public PacienteDto guardar(Paciente paciente) throws Exception{
 
-        if(paciente.getDomicilio() == null){
-            throw new BadRequestException("codigo-200", "No puedes agregar un paciente sin Domicilio");
-        }else if(paciente.getNombre() == null || paciente.getApellido() == null || paciente.getDni() == null || paciente.getFechaDeAlta() == null || Objects.equals(paciente.getFechaDeAlta(), "") || Objects.equals(paciente.getNombre(), "") || Objects.equals(paciente.getApellido(), "") || paciente.getDni().toString().equals("")){
-            throw new BadRequestException("codigo-204", "Alguno de los datos son erroneos - (los datos del paciente no pueden estar vacios o ser nulos)");
-        }else{
+            if(paciente.getDomicilio() == null) {
+                throw new BadRequestException("Codigo 203", "No puedes agregar un paciente sin domicilio.");
+            } else if(paciente.getNombre() == null && paciente.getNombre().equals("") && paciente.getApellido() == null && paciente.getApellido().equals("") && paciente.getDni() == null && paciente.getDni().equals("") && paciente.getFechaDeAlta() == null && paciente.getFechaDeAlta().equals("") && paciente.getDomicilio().getLocalidad() == null && paciente.getDomicilio().getLocalidad().equals("") && paciente.getDomicilio().getProvincia() == null && paciente.getDomicilio().getProvincia().equals("")){
+                throw new BadRequestException("Codigo 204", "No puedes agregar un paciente con campos vacios o nulos");
+            } else if(paciente.getDni().length() != 8) {
+                throw new BadRequestException("Codigo 205", "El dni debe contener 8 digitos");
+            }else if (repository.findByDni(paciente.getDni()).isPresent()){
+                throw new BadRequestException("codigo 207", "El dni ya se encuentra registrado en la base de datos");
+            }else if(!paciente.getDni().matches("[0-9]+")){
+                throw new BadRequestException("codigo 208", "El dni solo debe contener numeros");
+            }
+            else {
             Paciente p = repository.save(paciente);
-            return mapper.convertValue(p,PacienteDto.class);
 
+            return mapper.convertValue(p,PacienteDto.class);
         }
     }
 

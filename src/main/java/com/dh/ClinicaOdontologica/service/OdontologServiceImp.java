@@ -26,9 +26,12 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public OdontologoDto actualizar(Odontologo odontologo) throws Exception{
         if(repository.findById(odontologo.getId()).isPresent()){
-            if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
-
+            if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || odontologo.getNombre().length() < 3 || odontologo.getApellido().length() < 3 || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
                 throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos)");
+            }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000) {
+                throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
+            }else if(repository.findByMatricula(odontologo.getMatricula()).isPresent()) {
+                throw new BadRequestException("codigo-105", "La matricula ya se encuentra registrada en la base de datos");
             }else{
                 Odontologo o = repository.save(odontologo);
                 return mapper.convertValue(o, OdontologoDto.class);
@@ -41,11 +44,13 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     @Override
     public OdontologoDto guardar(Odontologo odontologo) throws Exception {
 
-        if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
-            throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos)");
+        if(odontologo.getNombre() == null || odontologo.getMatricula() == null || odontologo.getApellido() == null || odontologo.getNombre().length() < 3 || odontologo.getApellido().length() < 3 || Objects.equals(odontologo.getNombre(), "") || odontologo.getMatricula().toString().equals("") || Objects.equals(odontologo.getApellido(), "")){
+            throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos y los mismos deben ser mayor a 3 caracteres)");
         }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
             throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
-        }else {
+        }else if(repository.findByMatricula(odontologo.getMatricula()).isPresent()){
+            throw new BadRequestException("codigo-105", "La matricula ya se encuentra registrada en la base de datos");
+        }else{
             Odontologo o = repository.save(odontologo);
             return mapper.convertValue(o,OdontologoDto.class);
         }
