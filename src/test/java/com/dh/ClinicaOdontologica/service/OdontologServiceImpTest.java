@@ -29,7 +29,7 @@ class OdontologServiceImpTest {
     OdontologoRepository odontologoRepositoryTest;
 
     @Test
-    void buscarOdontologoExistentePorId() throws Exception {
+    void buscarOdontologoExistentePorIdPositivo() throws Exception {
         //ARRANGE
         Odontologo odontologoTest = new Odontologo(1,"vidal","pablo",123);
 
@@ -44,7 +44,7 @@ class OdontologServiceImpTest {
     }
 
     @Test
-    public void listarTodosLosOdontologos() throws Exception {
+    public void listarTodosLosOdontologosPositivo() throws Exception {
         //ARRANGE
         Odontologo odontologoTest1 = new Odontologo(1,"Herrera","Walter",123);
         Odontologo odontologoTest2 = new Odontologo(2,"Amado","Marcos",33);
@@ -84,6 +84,38 @@ class OdontologServiceImpTest {
 
         // ASSERT
         Assertions.assertEquals("El Odontontologo con id 1 no existe en la base de datos", exceptionReponse.getMessage());
+    }
+
+    @Test
+    public void guardarOdontologoTestPositivo() throws Exception {
+        //ARRANGE
+        Odontologo odontologo = new Odontologo(1,"Amado","Marcos",123);
+        when(odontologoRepositoryTest.save(odontologo)).thenReturn(odontologo);
+
+        // ACT
+        OdontologoDto dtoResponse = odontologServiceImpTest.guardar(odontologo);
+
+        // ASSERT
+        Assertions.assertNotNull(dtoResponse);
+        Assertions.assertEquals(odontologo.getNombre(), dtoResponse.getNombre());
+        Assertions.assertEquals(odontologo.getApellido(), dtoResponse.getApellido());
+    }
+
+    @Test
+    public void actualizarOdontologoTestPositivo() throws Exception {
+        //ARRANGE
+        Odontologo odontologo = new Odontologo(1,"Amado","Marcos",123);
+        when(odontologoRepositoryTest.findById(odontologo.getId())).thenReturn(Optional.of(odontologo));
+        when(odontologoRepositoryTest.save(odontologo)).thenReturn(odontologo);
+
+
+        // ACT
+        OdontologoDto dtoResponse = odontologServiceImpTest.actualizar(odontologo);
+
+        // ASSERT
+        Assertions.assertNotNull(dtoResponse);
+        Assertions.assertEquals(odontologo.getNombre(), dtoResponse.getNombre());
+        Assertions.assertEquals(odontologo.getApellido(), dtoResponse.getApellido());
     }
 
 }
