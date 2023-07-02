@@ -2,6 +2,8 @@ package com.dh.ClinicaOdontologica.service;
 
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.entity.Odontologo;
+import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.OdontologoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -57,17 +60,30 @@ class OdontologServiceImpTest {
         Assertions.assertEquals(2, resultado.size());
         Assertions.assertTrue(resultado.stream().anyMatch(oDto -> oDto.getNombre().equals("Marcos") && oDto.getApellido().equals("Amado")));
     }
-//    @Test
-//    void borrarPorId_OdontologoExistente_OdontologoEliminado() throws Exception {
-//        // Arrange
-//        Odontologo odontologo = new Odontologo(1, "Arce", "Alberto", 1000);
-//        when(odontologoRepositoryTest.findById(odontologo.getId())).thenReturn(Optional.of(odontologo));
-//
-//        // Act
-//        odontologServiceImpTest.borrarPorId(odontologo.getId());
-//
-//        // Assert
-//        verify(odontologoRepositoryTest, times(1)).deleteById(odontologo.getId());
-//    }
+    @Test
+    public void testBorrarPorId_Existente() throws Exception {
+        //ARRANGE
+        Odontologo odontologo = new Odontologo(1,"Amado","Marcos",123);
+        when(odontologoRepositoryTest.existsById(odontologo.getId())).thenReturn(true);
+
+        // ACT
+        odontologServiceImpTest.borrarPorId(odontologo.getId());
+
+        // ASSERT
+        verify(odontologoRepositoryTest, times(1)).deleteById(odontologo.getId());
+    }
+
+    @Test
+    public void testBorrarPorId_NoExistente() throws Exception {
+        //ARRANGE
+        Odontologo odontologo = new Odontologo(1,"Amado","Marcos",123);
+        when(odontologoRepositoryTest.existsById(odontologo.getId())).thenReturn(false);
+
+        // ACT
+        NotFoundException exceptionReponse = assertThrows(NotFoundException.class,() -> {odontologServiceImpTest.borrarPorId(odontologo.getId());});
+
+        // ASSERT
+        Assertions.assertEquals("El Odontontologo con id 1 no existe en la base de datos", exceptionReponse.getMessage());
+    }
 
 }

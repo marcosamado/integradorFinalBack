@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OdontologoDto {
 
+    private Integer id;
     private String nombre;
     private String apellido;
 

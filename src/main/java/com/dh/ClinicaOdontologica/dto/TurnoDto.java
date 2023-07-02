@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TurnoDto {
+    private Integer id;
     private String fecha;
     private String hora;
     private PacienteDto paciente;

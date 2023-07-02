@@ -3,18 +3,18 @@ package com.dh.ClinicaOdontologica.service;
 import com.dh.ClinicaOdontologica.dto.PacienteDto;
 import com.dh.ClinicaOdontologica.entity.Paciente;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.GlobalExceptionHandler;
 import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.PacienteRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
@@ -23,6 +23,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     private PacienteRepository repository;
     private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     @Override
     public PacienteDto actualizar(Paciente paciente) throws Exception{
@@ -33,13 +34,12 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
                 throw new BadRequestException("Codigo 204", "No puedes agregar un paciente con campos vacios o nulos");
             } else if(paciente.getDni().length() != 8) {
                 throw new BadRequestException("Codigo 205", "El dni debe contener 8 digitos");
-            }else if (repository.findByDni(paciente.getDni()).isPresent()){
-                throw new BadRequestException("codigo 207", "El Dni ya existe en la base de datos");
             }else if(!paciente.getDni().matches("[0-9]+")){
                 throw new BadRequestException("codigo 208", "El dni solo debe contener numeros");
             }
             else {
                 Paciente p = repository.save(paciente);
+                logger.info("Se Modifico el paciente con id "+ paciente.getId() + " en la base de datos");
                 return mapper.convertValue(p, PacienteDto.class);
             }
         }else{
@@ -63,7 +63,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
             }
             else {
             Paciente p = repository.save(paciente);
-
+            logger.info("Se agrego un nuevo paciente a la base de datos");
             return mapper.convertValue(p,PacienteDto.class);
         }
     }
@@ -72,6 +72,7 @@ public class PacienteServiceImp implements ClinicaOdontologicaService<Paciente, 
     public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
+            logger.info("Se Elimino el paciente con id "+ id + " de la base de datos");
         }else {
             throw new NotFoundException("codigo-201", "El Paciente con id: " + id + " no existe en la base de datos");
         }

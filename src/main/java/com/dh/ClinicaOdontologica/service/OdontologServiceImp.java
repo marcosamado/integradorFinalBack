@@ -3,11 +3,14 @@ package com.dh.ClinicaOdontologica.service;
 import com.dh.ClinicaOdontologica.dto.OdontologoDto;
 import com.dh.ClinicaOdontologica.entity.Odontologo;
 import com.dh.ClinicaOdontologica.exception.BadRequestException;
+import com.dh.ClinicaOdontologica.exception.GlobalExceptionHandler;
 import com.dh.ClinicaOdontologica.exception.NotFoundException;
 import com.dh.ClinicaOdontologica.repository.OdontologoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     private OdontologoRepository repository;
     private final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+
+
     @Override
     public OdontologoDto actualizar(Odontologo odontologo) throws Exception{
         if(repository.findById(odontologo.getId()).isPresent()){
@@ -30,10 +36,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
                 throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos)");
             }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000) {
                 throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
-            }else if(repository.findByMatricula(odontologo.getMatricula()).isPresent()) {
-                throw new BadRequestException("codigo-105", "La matricula ya se encuentra registrada en la base de datos");
             }else{
                 Odontologo o = repository.save(odontologo);
+                logger.info("Se Modifico el odontologo con id "+ odontologo.getId() + " en la base de datos");
                 return mapper.convertValue(o, OdontologoDto.class);
             }
         } else{
@@ -48,10 +53,9 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
             throw new BadRequestException("codigo-104", "Alguno de los datos son erroneos - (los datos del odontologo no pueden estar vacios o ser nulos y los mismos deben ser mayor a 3 caracteres)");
         }else if(odontologo.getMatricula() < 0 || odontologo.getMatricula() > 10000){
             throw new BadRequestException("codigo-100", "La matricula debe ser mayor a 0 y menos a 10.000");
-        }else if(repository.findByMatricula(odontologo.getMatricula()).isPresent()){
-            throw new BadRequestException("codigo-105", "La matricula ya se encuentra registrada en la base de datos");
         }else{
             Odontologo o = repository.save(odontologo);
+            logger.info("Se agrego un nuevo odontologo a la base de datos");
             return mapper.convertValue(o,OdontologoDto.class);
         }
     }
@@ -60,6 +64,7 @@ public class OdontologServiceImp implements ClinicaOdontologicaService<Odontolog
     public void borrarPorId(Integer id) throws Exception{
         if(repository.existsById(id)){
             repository.deleteById(id);
+            logger.info("Se Elimino el odontologo con id "+ id + " de la base de datos");
         }else{
             throw new NotFoundException("codigo-101", "El Odontontologo con id " + id + " no existe en la base de datos");
         }
