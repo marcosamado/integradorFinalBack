@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DomicilioDto {
-    private String direccion;
+    private String localidad;
 
 }

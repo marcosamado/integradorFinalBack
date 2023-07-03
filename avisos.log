@@ -7,3 +7,15 @@
 [2023-07-03 12:47.50] [INFO ] [GlobalExceptionHandler:41] Se Modifico el odontologo con id 1 en la base de datos
 [2023-07-03 12:47.50] [INFO ] [GlobalExceptionHandler:67] Se Elimino el odontologo con id 1 de la base de datos
 [2023-07-03 12:47.50] [INFO ] [GlobalExceptionHandler:58] Se agrego un nuevo odontologo a la base de datos
+[2023-07-03 19:48.43] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 19:50.56] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 19:53.22] [ERROR] [GlobalExceptionHandler:20] mensaje de error de BadRequestException -->El dni ya se encuentra registrado en la base de datos
+[2023-07-03 19:53.49] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 19:54.25] [ERROR] [GlobalExceptionHandler:20] mensaje de error de BadRequestException -->El dni debe contener 8 digitos
+[2023-07-03 19:54.48] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 19:55.52] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 19:56.38] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 19:59.30] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:07.40] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:10.42] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:12.13] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos

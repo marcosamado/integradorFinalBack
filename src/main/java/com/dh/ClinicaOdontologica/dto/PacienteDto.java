@@ -12,5 +12,6 @@ public class PacienteDto {
     private Integer id;
     private String apellido;
     private String nombre;
+    private DomicilioDto domicilio;
 
 }
