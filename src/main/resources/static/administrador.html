@@ -22,92 +22,48 @@
     <header class="h-28 ml-2 mr-2">
         <h1 class="font-medium text-5xl text-start pl-8 pt-5 text-blue-900">Panel de administrador</h1>
     </header>
-    <main>
-        <div class="flex flex-row">
+    <main class="container w-4/5 h-screen mt-10 ml-auto mr-auto">
 
-            <!-- ********* AGREGAR PACIENTE ************ -->
-            <section class="container relative flex flex-col items-center">
-                <button id="buttonAgregarPaciente" class="relative w-2/4 h-16 bg-gradient-to-l from-blue-950 to-blue-800 text-pink-100 text-xl">Agregar Paciente<span id="spanAgregarPaciente" class="absolute right-0 top-2"><img src="./assets/arrow.svg" alt="" srcset=""></span></button>
-                <form id="formAgregarPaciente" class="container relative -top-16 hidden w-2/4 ml-auto mr-auto">
-                    <div class="flex flex-col">
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Nombre</legend>
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="nombre" id="nombrePaciente" placeholder="Ingresa tu nombre"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Apellido</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="apellido" id="apellido" placeholder="Ingresa tu Apellido"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Documento</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="documento" id="documento" placeholder="Ingresa tu Documento"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Fecha de alta</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="fechaDeAlta" id="fechaDeAlta" placeholder="Ingresa la fecha"></label>
-                        </fieldset>
-                        <fieldset class="border border-blue-950 text-blue-950 w-auto h-auto flex flex-row flex-wrap justify-between p-2">
-                            <legend>Domicilio</legend>
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-full">
-                                    <legend>Calle</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="calle" id="calle" placeholder="Ingresa la Calle"></label>
-                                </fieldset>    
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-7/12">
-                                    <legend>Localidad</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="localidad" id="localidad" placeholder="Ingresa la Localidad"></label>
-                                </fieldset>    
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-2/5">
-                                    <legend>Provincia</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="provincia" id="provincia" placeholder="Ingresa la provincia"></label>
-                                </fieldset>    
-                        </fieldset>
-                        <button class="w-auto p-2 h-auto rounded-md hover:bg-blue-800 bg-blue-950 mt-5 text-pink-100 ml-auto mr-auto" type="submit">Agregar Paciente</button>
-                    </div>
-                </form>
-            </section>
+        <section class="container relative flex flex-col items-center">
+            <button id="buttonAgregarPaciente" class="relative w-2/4 h-16 bg-gradient-to-l from-blue-950 to-blue-800 text-pink-100 text-xl">Agregar Paciente<span id="spanAgregarPaciente" class="absolute right-0 top-2"><img src="./assets/arrow.svg" alt="" srcset=""></span></button>
+            <form id="formAgregarPaciente" class="container relative -top-16 hidden w-2/4 ml-auto mr-auto">
+                <div class="flex flex-col">
+                    <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
+                        <legend>Nombre</legend>
+                        <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="nombre" id="nombrePaciente" placeholder="Ingresa tu nombre"></label>
+                    </fieldset>
+                    <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
+                        <legend>Apellido</legend>    
+                        <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="apellido" id="apellido" placeholder="Ingresa tu Apellido"></label>
+                    </fieldset>
+                    <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
+                        <legend>Documento</legend>    
+                        <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="documento" id="documento" placeholder="Ingresa tu Documento"></label>
+                    </fieldset>
+                    <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
+                        <legend>Fecha de alta</legend>    
+                        <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="fechaDeAlta" id="fechaDeAlta" placeholder="Ingresa la fecha"></label>
+                    </fieldset>
+                    <fieldset class="border border-blue-950 text-blue-950 w-auto h-auto flex flex-row flex-wrap justify-between p-2">
+                        <legend>Domicilio</legend>
+                            <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-full">
+                                <legend>Calle</legend>
+                                <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="calle" id="calle" placeholder="Ingresa la Calle"></label>
+                            </fieldset>    
+                            <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-7/12">
+                                <legend>Localidad</legend>
+                                <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="localidad" id="localidad" placeholder="Ingresa la Localidad"></label>
+                            </fieldset>    
+                            <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-2/5">
+                                <legend>Provincia</legend>
+                                <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="provincia" id="provincia" placeholder="Ingresa la provincia"></label>
+                            </fieldset>    
+                    </fieldset>
+                    <button class="w-auto p-2 h-auto rounded-md hover:bg-blue-800 bg-blue-950 mt-5 text-pink-100 ml-auto mr-auto" type="submit">Agregar Paciente</button>
+                </div>
+            </form>
+        </section>
     
-            <!-- ********* ACTUALIZAR PACIENTE ************ -->
-            <section class="container relative flex flex-col items-center">
-                <button id="buttonActualizarPaciente" class="relative w-2/4 h-16 bg-gradient-to-l from-blue-950 to-blue-800 text-pink-100 text-xl">Actualizar Paciente<span id="spanActualizarPaciente" class="absolute right-0 top-2"><img src="./assets/arrow.svg" alt="" srcset=""></span></button>
-                <form id="formActualizarPaciente" class="container relative -top-16 hidden w-2/4 ml-auto mr-auto">
-                    <div class="flex flex-col">
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Nombre</legend>
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="nombre" id="nombre" placeholder="Ingresa tu nombre"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Apellido</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="apellido" id="apellido" placeholder="Ingresa tu Apellido"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Documento</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="documento" id="documento" placeholder="Ingresa tu Documento"></label>
-                        </fieldset>
-                        <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950">
-                            <legend>Fecha de alta</legend>    
-                            <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="fechaDeAlta" id="fechaDeAlta" placeholder="Ingresa la fecha"></label>
-                        </fieldset>
-                        <fieldset class="border border-blue-950 text-blue-950 w-auto h-auto flex flex-row flex-wrap justify-between p-2">
-                            <legend>Domicilio</legend>
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-full">
-                                    <legend>Calle</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="calle" id="calle" placeholder="Ingresa la Calle"></label>
-                                </fieldset>    
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-7/12">
-                                    <legend>Localidad</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="localidad" id="localidad" placeholder="Ingresa la Localidad"></label>
-                                </fieldset>    
-                                <fieldset class="border focus-within:border-2 focus-within:font-medium border-blue-950 text-blue-950 w-2/5">
-                                    <legend>Provincia</legend>
-                                    <label><input class="p-1 w-full outline-none text-rose-900" type="text" name="provincia" id="provincia" placeholder="Ingresa la provincia"></label>
-                                </fieldset>    
-                        </fieldset>
-                        <button class="w-auto p-2 h-auto rounded-md hover:bg-blue-800 bg-blue-950 mt-5 text-pink-100 ml-auto mr-auto" type="submit">Actualizar Usuario</button>
-                    </div>
-                </form>
-            </section>
-        </div>
-        <!-- ACA SE MUESTRAN LOS PACIENTES -->
         <section class="flex flex-col container mt-20 ml-auto mr-auto w-2/3">
             <button id="botonMostrarPaciente" class="p-2 w-auto h-auto rounded-md hover:bg-blue-800 bg-blue-950 mt-5 text-pink-100 ml-auto mr-auto">Mostrar Pacientes</button>
             <div id="contenedor-items" class="conteiner flex flex-row w-auto h-auto flex-wrap">

@@ -19,3 +19,21 @@
 [2023-07-03 20:07.40] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
 [2023-07-03 20:10.42] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
 [2023-07-03 20:12.13] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:38.58] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:39.02] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:39.56] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:42.32] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:43.04] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:43.17] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:47.45] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:53.00] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:53.25] [INFO ] [GlobalExceptionHandler:75] Se Elimino el paciente con id 1 de la base de datos
+[2023-07-03 20:53.28] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 20:53.56] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:54.15] [INFO ] [GlobalExceptionHandler:75] Se Elimino el paciente con id 2 de la base de datos
+[2023-07-03 20:55.31] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 20:56.02] [INFO ] [GlobalExceptionHandler:75] Se Elimino el paciente con id 1 de la base de datos
+[2023-07-03 20:56.02] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados
+[2023-07-03 21:00.03] [INFO ] [GlobalExceptionHandler:66] Se agrego un nuevo paciente a la base de datos
+[2023-07-03 21:00.15] [INFO ] [GlobalExceptionHandler:75] Se Elimino el paciente con id 1 de la base de datos
+[2023-07-03 21:00.15] [ERROR] [GlobalExceptionHandler:28] mensaje de error de NotFoundException -->No se encontraron Pacientes registrados

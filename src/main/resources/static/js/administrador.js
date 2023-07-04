@@ -6,9 +6,6 @@ window.addEventListener('load', function () {
     const spanAgregarPaciente = document.getElementById("spanAgregarPaciente");
     const buttonAgregarPaciente = document.getElementById("buttonAgregarPaciente");
 
-    const formActualizarPaciente = document.getElementById("formActualizarPaciente");
-    const spanActualizarPaciente = document.getElementById("spanActualizarPaciente");
-    const buttonActualizarPaciente = document.getElementById("buttonActualizarPaciente");
 
 
     buttonAgregarPaciente.addEventListener("click", (e)=> {
@@ -19,15 +16,6 @@ window.addEventListener('load', function () {
         formAgregarPaciente.classList.toggle("top-0"); 
     })
 
-
-    buttonActualizarPaciente.addEventListener("click", (e)=> {
-        console.log(e);
-        spanActualizarPaciente.classList.toggle("transition-transform");
-        spanActualizarPaciente.classList.toggle("rotate-90");
-        formActualizarPaciente.classList.toggle("transition-transform")
-        formActualizarPaciente.classList.toggle("hidden");
-        formActualizarPaciente.classList.toggle("top-0");
-    })
 
 
     /* -------------------------------------------------------------------------- */
@@ -153,7 +141,7 @@ window.addEventListener('load', function () {
         })
 
         setTimeout(()=> {
-            if(data.length === 0){
+            if(data.codigoError){
                 templateNoItems.querySelector("p").textContent;
                 let clone = templateNoItems.cloneNode(true);
                 fragment.appendChild(clone);
@@ -171,6 +159,98 @@ window.addEventListener('load', function () {
             }
             contenedor.appendChild(fragment);
         },1000);
+    };
 
+        /* -------------------------------------------------------------------------- */
+    /*                               ELIMINAR POR ID                              */
+    /* -------------------------------------------------------------------------- */
+
+    function deletePaciente(){
+        contenedor.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
+        
+            if(e.target.classList.contains("btn")){
+                let idPaciente = e.target.dataset.id;
+                console.log(e.target);
+                Swal.fire({
+                    title: 'Estas Seguro?',
+                    text: "No podras revertir estos cambios",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Eliminar!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        let settings = {
+                            method: "DELETE",
+                            headers: {
+                                "Content-type": "application/json"
+                            }
+                        };
+                    
+                        fetch(`http://localhost:8080/pacientes/${idPaciente}`, settings)
+                        .then(response => {
+                            getPacientesSinEfecto()
+                            return response.json();
+                        })
+                        .catch(error => {
+                            return error;
+                        })
+
+                        Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                    }
+                })
+
+            }
+        });
+    }
+    deletePaciente();
+
+    function getPacientesSinEfecto(){
+        let settings = {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json"
+            }
+        };
+
+        fetch("http://localhost:8080/pacientes", settings)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            imprimirPacientesSinEfecto(data);
+        })
+        .catch(error => {
+            return error;
+        })
+    };
+
+    function imprimirPacientesSinEfecto(data){
+        contenedor.innerHTML = "";
+
+        if(data.codigoError){
+            templateNoItems.querySelector("p").textContent;
+            let clone = templateNoItems.cloneNode(true);
+            fragment.appendChild(clone);
+        }else{ 
+                data.forEach(user => {
+                console.log(user);
+                templateItems.getElementById("idPaciente").innerHTML = `<p id="idPaciente" class="text-center text-yellow-400"><span class="text-start text-pink-100">ID </span>${user.id}</p>`
+                templateItems.getElementById("nombrePaciente").innerHTML = `<p id="nombrePaciente" class="text-center text-yellow-400"><span class="text-pink-100">NOMBRE </span>${user.nombre}</p>`
+                templateItems.getElementById("apellidoPaciente").innerHTML = `<p id="apellidoPaciente" class="text-center text-yellow-400"><span class="text-pink-100">APELLIDO </span>${user.apellido}</p>`
+                templateItems.getElementById("localidad").innerHTML = `<p id="localidad" class="text-center text-yellow-400"><span class="text-pink-100">LOCALIDAD </span>${user.domicilio.localidad}</p>`
+                templateItems.querySelector(".btn").dataset.id = user.id;
+                let clone = templateItems.cloneNode(true);
+                fragment.appendChild(clone);
+            });
+        }
+        contenedor.appendChild(fragment);
     }
 });
